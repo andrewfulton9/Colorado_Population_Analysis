@@ -41,7 +41,7 @@ def make_layers(df):
     return layers_ls
 
 def build_figure(layers_ls, year, colorscl=colorscl,
-                 mapbox_access_token=None):
+                 mapbox_access_token=None, name = 'image.jpeg'):
     data = go.Data([
                 go.Scattermapbox(
                         lat = [0],
@@ -81,7 +81,7 @@ def build_figure(layers_ls, year, colorscl=colorscl,
     )
 
     fig = dict(data = data, layout=layout)
-    py.image.save_as(fig, filename='images/co_pop_{}.jpeg'.format(year),
+    py.image.save_as(fig, filename=name,
                      width = 750, height= 575)
 
 if __name__ == '__main__':
@@ -120,7 +120,7 @@ if __name__ == '__main__':
     full_df = full_df.join(ser, on='county')
 
     # make figure for each year
-    for year in xrange(1992,2041):
+    for year in xrange(2013,2041):
         year = int(year)
         print year
         year_df = full_df[full_df['year'] == year].copy()
@@ -129,5 +129,11 @@ if __name__ == '__main__':
         print '... building layers'
         layers = make_layers(year_df)
         print '... building figure'
-        build_figure(layers, year,
-                     mapbox_access_token=mapbox_access_token)
+        name = 'co_pop_{}.jpeg'.format(year)
+        while name not in os.listdir('images'):
+            try:
+                build_figure(layers, year,
+                            mapbox_access_token=mapbox_access_token,
+                            name = 'images/' + name)
+            except:
+                continue

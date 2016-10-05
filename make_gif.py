@@ -1,10 +1,12 @@
-from images2gif import writeGif
+import imageio
 from PIL import Image
 import os
 
-files_names = sorted((fn for fn in os.listdir('images') if fn.endswith('.jpeg')))
+file_names = sorted((fn for fn in os.listdir('images') if fn.endswith('.png')))
 
-images = [Image.open(fn) for fn in file_names]
+images = [('images/' + fn) for fn in file_names]
 
-fn = 'CO_pop_gif.GIF'
-writeGIF(fn, images, duration = 1)
+frames = [imageio.imread(im) for im in images]
+
+name = 'CO_pop_gif.GIF'
+imageio.mimsave(name, frames, 'GIF', **{'duration':.1})

@@ -3,6 +3,10 @@
 
 This repository is the results of a miniproject I undertook in order to better understand Colorado's population trends. I also took the opportunity to better understand how to use plotly.
 
+# Data
+
+The population data has been provided by Colorado's state government and can be downloaded from [here](https://data.colorado.gov/Demographics/Colorado-Population-Projections/q5vp-adf3). The website that provides the geojson files with county geolocation data is [CivicDashboards](http://catalog.civicdashboards.com), and the specific colorado county geolocation dataset can be downloaded from [here](http://catalog.civicdashboards.com/dataset/colorado-counties-polygon).
+
 # Colorado's Total Population
 
 ![population gif](plots/CO_pop_gif.GIF)

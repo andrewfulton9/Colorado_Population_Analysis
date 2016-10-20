@@ -30,6 +30,10 @@ def get_scl(obj):
     frac = obj / 10000
     return scl[frac]
 
+def get_scl_density(obj):
+    frac = int(obj / 500) * 9
+    return scl[frac]
+
 def make_layers(df):
     layers_ls = []
     for x in df.index:
@@ -47,12 +51,12 @@ def build_figure(layers_ls, year, colorscl=colorscl,
                         lat = [0],
                         lon = [0],
                         marker = go.Marker(
-                                      cmax=1000000,
+                                      cmax=5000,
                                       cmin=0,
                                       colorscale = colorscl,
                                       showscale = True,
                                       autocolorscale=False,
-                                      color=range(0,10000000),
+                                      color=range(0,5000),
                                       colorbar= go.ColorBar(
                                                      len = .89
                                                             )
@@ -84,16 +88,46 @@ def build_figure(layers_ls, year, colorscl=colorscl,
     py.image.save_as(fig, filename=name,
                      width = 750, height= 575)
 
+def make_images(df, the_range = xrange(1990,2041),
+                img = 'pop', folder = 'images', fn = 'pop_',
+                mat=None):
+    for year in the_range:
+        year = int(year)
+        print year
+        year_df = full_df[full_df['year'] == year].copy()
+        print '... getting colors'
+        if img == 'pop':
+            year_df['color'] = year_df['totalPopulation'].apply(get_scl)
+        elif img == 'density':
+            year_df['color'] = year_df['pop_density'].apply(get_scl_density)
+        print '... building layers'
+        layers = make_layers(year_df)
+        print '... building figure'
+        name = '{}_{}.jpeg'.format(fn, year)
+        path = folder + '/' + name
+        while name not in os.listdir(folder):
+            try:
+                build_figure(layers, year,
+                            mapbox_access_token=mat,
+                            name = path)
+                print 'image for year {} built'.format(year)
+            except:
+                print 'retrying'
+                continue
+
 if __name__ == '__main__':
 
     mapbox_access_token = os.environ['MAPBOX_AT']
 
 
 
-    df = pd.read_csv('Population_Colorado.csv')
+    df = pd.read_csv('data/Population_Colorado.csv')
+
+    ser_area = pd.read_pickle('data/county_area.pkl')
+    ser_area.name = 'area'
 
     # read in county border data
-    with open('colorado_counties.geojson') as f:
+    with open('data/colorado_counties.geojson') as f:
         counties = json.load(f)
 
     # format dataframe
@@ -118,22 +152,11 @@ if __name__ == '__main__':
 
     # join geodict series to population dataframe
     full_df = full_df.join(ser, on='county')
+    full_df = full_df.join(ser_area, on='county')
+
+    full_df['pop_density'] = full_df['totalPopulation'].div(full_df['area'])
 
     # make figure for each year
-    for year in xrange(2013,2041):
-        year = int(year)
-        print year
-        year_df = full_df[full_df['year'] == year].copy()
-        print '... getting colors'
-        year_df['color'] = year_df['totalPopulation'].apply(get_scl)
-        print '... building layers'
-        layers = make_layers(year_df)
-        print '... building figure'
-        name = 'co_pop_{}.jpeg'.format(year)
-        while name not in os.listdir('images'):
-            try:
-                build_figure(layers, year,
-                            mapbox_access_token=mapbox_access_token,
-                            name = 'images/' + name)
-            except:
-                continue
+    make_images(full_df, the_range=xrange(2036,2041), img = 'density',
+                folder = 'image_pop_dens', fn = 'pop_density',
+                mat=mapbox_access_token)

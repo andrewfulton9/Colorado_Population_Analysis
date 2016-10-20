@@ -106,14 +106,14 @@ def make_images(df, the_range = xrange(1990,2041),
         name = '{}_{}.jpeg'.format(fn, year)
         path = folder + '/' + name
         while name not in os.listdir(folder):
-            try:
-                build_figure(layers, year,
-                            mapbox_access_token=mat,
-                            name = path)
-                print 'image for year {} built'.format(year)
-            except:
-                print 'retrying'
-                continue
+            # try:
+            build_figure(layers, year,
+                        mapbox_access_token=mat,
+                        name = path)
+            print 'image for year {} built'.format(year)
+            # except:
+            #     print 'retrying'
+            #     continue
 
 if __name__ == '__main__':
 
@@ -157,6 +157,6 @@ if __name__ == '__main__':
     full_df['pop_density'] = full_df['totalPopulation'].div(full_df['area'])
 
     # make figure for each year
-    make_images(full_df, the_range=xrange(2036,2041), img = 'density',
+    make_images(full_df, the_range=xrange(1990,2041), img = 'density',
                 folder = 'image_pop_dens', fn = 'pop_density',
                 mat=mapbox_access_token)

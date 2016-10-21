@@ -16,7 +16,7 @@ def check_dir(n, dirs):
 def get_from_folder(dirs):
     folder = None
     while folder not in dirs:
-        print 'directories to choose from: ' dirs
+        print 'directories to choose from: ', dirs
         folder = raw_input('Type which directory the images are in?')
         check_dir(folder, dirs)
     return folder
@@ -24,7 +24,7 @@ def get_from_folder(dirs):
 def get_to_folder(dirs):
     save_to = None
     while save_to not in dirs:
-        print 'directories to choose from: ' dirs
+        print 'directories to choose from: ', dirs
         save_to = raw_input('where would you like to save GIF?')
         check_dir(save_to, dirs)
     return save_to

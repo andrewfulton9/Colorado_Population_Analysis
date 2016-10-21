@@ -4,7 +4,7 @@ import os
 
 def make_gif(folder = 'images', name = 'CO_pop_gif.GIF', save_to = 'plots'):
     file_names = sorted((fn for fn in os.listdir(folder) if fn.endswith('.png')))
-    images = [('folder' + fn) for fn in file_names]
+    images = [(folder + '/' + fn) for fn in file_names]
     frames = [imageio.imread(im) for im in images]
     save_path = save_to + '/' + name
     imageio.mimsave(save_path, frames, 'GIF', **{'duration':.1})
@@ -40,6 +40,7 @@ if __name__ == '__main__':
     yn = raw_input('Custom save? type y for yes, n for no: ')
     if yn == 'y':
         f, st, n = where_to()
+        print f, st, n
         make_gif(folder = f, name = n, save_to = st)
     else:
         make_gif()

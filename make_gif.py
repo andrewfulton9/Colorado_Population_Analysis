@@ -17,7 +17,7 @@ def get_from_folder(dirs):
     folder = None
     while folder not in dirs:
         print 'directories to choose from: ', dirs
-        folder = raw_input('Type which directory the images are in?')
+        folder = raw_input('Type which directory the images are in?: ')
         check_dir(folder, dirs)
     return folder
 

@@ -2,16 +2,18 @@ import imageio
 from PIL import Image
 import os
 
-def make_gif(folder = 'images', name = 'CO_pop_gif.GIF', save_to = 'plots'):
+def make_gif(folder = 'image_pop_dens', name = 'CO_pop_dense.GIF', save_to = 'plots'):
     file_names = sorted((fn for fn in os.listdir(folder) if fn.endswith('.png')))
     images = [(folder + '/' + fn) for fn in file_names]
+    print images
     frames = [imageio.imread(im) for im in images]
     save_path = save_to + '/' + name
+    print save_path
     imageio.mimsave(save_path, frames, 'GIF', **{'duration':.1})
 
 def check_dir(n, dirs):
     if n not in dirs:
-        print '{} is not available, try again'.input(n)
+        print '{} is not available, try again'.format(n)
 
 def get_from_folder(dirs):
     folder = None
@@ -37,6 +39,7 @@ def where_to():
     return folder, save_to, name
 
 if __name__ == '__main__':
+
     yn = raw_input('Custom save? type y for yes, n for no: ')
     if yn == 'y':
         f, st, n = where_to()

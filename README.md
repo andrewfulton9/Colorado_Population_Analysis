@@ -11,6 +11,10 @@ The population data has been provided by Colorado's state government and can be 
 
 ![population gif](plots/CO_pop_gif.GIF)
 
+# Colorado's Changing Population density
+
+![density gif](plots/CO_pop_dense.GIF)
+
 # Denver County Population
 
 ![denver popuation](plots/denver_pop.png)

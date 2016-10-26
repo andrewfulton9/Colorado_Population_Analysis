@@ -45,7 +45,7 @@ def make_layers(df):
     return layers_ls
 
 def build_figure(layers_ls, year, colorscl=colorscl,
-                 mapbox_access_token=None, name = 'image.jpeg'):
+                 mapbox_access_token=None, name = 'image.png'):
     data = go.Data([
                 go.Scattermapbox(
                         lat = [0],
@@ -103,7 +103,7 @@ def make_images(df, the_range = xrange(1990,2041),
         print '... building layers'
         layers = make_layers(year_df)
         print '... building figure'
-        name = '{}_{}.jpeg'.format(fn, year)
+        name = '{}_{}.png'.format(fn, year)
         path = folder + '/' + name
         while name not in os.listdir(folder):
             # try:
